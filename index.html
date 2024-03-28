@@ -1,13 +1,13 @@
-<html>
-<head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>April Fools' Day Surprise</title>
     <script>
-        setTimeout(() => {
-            let body = document.body;
-            let cubeSize = +getComputedStyle(body).getPropertyValue('--cube-size').replace(/\D/g, '');
-            let numberH = Math.ceil(body.clientHeight / cubeSize);
-            let numberW = Math.ceil(body.clientWidth / cubeSize) + 2;
-            let maxElement = numberH * numberW;
-            body.innerHTML += '<i></i>'.repeat(maxElement);
+        document.addEventListener('DOMContentLoaded', () => {
+            const numberOfCubes = calculateCubesNeeded();
+            document.body.innerHTML += '<i></i>'.repeat(numberOfCubes);
 
             let style = '<style>'
             let maxGrad = 30;
@@ -19,10 +19,18 @@
             }
             style += '</style>'
             document.head.innerHTML += style;
+
+            function calculateCubesNeeded() {
+                const cubeSize = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--cube-size').replace(/\D/g, ''), 10);
+                const screenWidth = window.innerWidth;
+                const screenHeight = window.innerHeight;
+                const cubesPerRow = Math.ceil(screenWidth / cubeSize) +2;
+                const rowsNeeded = Math.ceil(screenHeight / cubeSize);
+                return cubesPerRow * rowsNeeded;
+            }
         });
     </script>
     <style>
-
         html, body {
             --cube-size: 50px;
             --roll-speed: 2000ms;
@@ -36,8 +44,8 @@
             margin: 0 calc(0px - var(--cube-size));
             width: calc(100% + var(--cube-size) * 2);
             display: flex;
-            overflow: hidden;
             flex-wrap: wrap;
+            overflow: hidden;
             align-content: flex-start;
         }
 
@@ -45,9 +53,6 @@
             flex: 0 0 auto;
             height: var(--cube-size);
             width: var(--cube-size);
-            margin: 0;
-            padding: 0;
-            --animated-color: 0;
             animation: roll-color linear var(--roll-speed) infinite running;
             background-color: hsl(calc(var(--initial-color) + var(--animated-color)), 100%, 50%);
         }
